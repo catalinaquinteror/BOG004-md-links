@@ -1,10 +1,12 @@
-const mdLinks = require('../');
+const mdLinks = require('../src/index.js');
 
 
 describe('mdLinks', () => {
 
-  it('should...', () => {
-    console.log('FIX ME!');
+  it('should be a function', () => {
+    return fetchData().then(data => {
+      expect(typeof mdLinks).toBe("function");
+    });
   });
 
 });

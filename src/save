@@ -1,0 +1,179 @@
+
+// const fs = require("file-system");
+// const { readFile } = require("fs");
+// const path = require("path");
+// const { argv } = require("process");
+// const fetch = require("node-fetch");
+// // export default () => {
+// // ...
+// // };
+// const pathArg = process.argv[2];
+// //console.log(pathArg);
+
+// //Checking if path is validate.
+// function validatePathExist(pathArg) {
+//   const ifExist = fs.existsSync(pathArg);
+//  // console.log("Path exists", exist);
+//   if (exist) {
+//     absolutePath(pathArg);
+//   } else {
+//    // console.log("Path is not validate");
+//   }
+//   return exist;
+// }
+// validatePathExist(pathArg);
+
+// //Verifying absolute path and changing
+// function absolutePath(pathArg) {
+//   let pathAbsolute = pathArg;
+//   const relative = !path.isAbsolute(pathArg);
+//   if (relative) {
+//     pathAbsolute = path.resolve(pathArg);
+//   }
+//   //console.log("It returns the absolute path", pathAbsolute);
+//   return pathAbsolute;
+// }
+// absolutePath(pathArg);
+
+// //Veryfy directory or md (recursive function)
+// const traverseFolder = (pathArg) => {
+//   let arrayAbsolutePathMD = [];
+//   const userPath = absolutePath(pathArg);
+//   //console.log("This is a directory", userPath);
+//   if (fs.statSync(userPath).isFile() && path.extname(userPath) === ".md") {
+//     arrayAbsolutePathMD.push(userPath);
+//     //console.log("Is a file", userPath);
+//   } else if (
+//     fs.statSync(userPath).isFile() &&
+//     !path.extname(userPath) === ".md"
+//   ) {
+//     // console.log("Is another type of file");
+//   } else {
+//     const openDR = fs.readdirSync(userPath);
+//     openDR.forEach((element) => {
+//       let newPath = path.join(userPath, element);
+//       // console.log('ids', traverseFolder(newPath))
+//       if (fs.statSync(newPath).isDirectory()) {
+//         arrayAbsolutePathMD = arrayAbsolutePathMD.concat(
+//           traverseFolder(newPath)
+//         );
+//         // console.log("Its a folder", arrayAbsolutePathMD);
+//       } else {
+//         if (path.extname(newPath) === ".md") {
+//           arrayAbsolutePathMD.push(newPath);
+//         }
+//       }
+//     });
+//   }
+//  // console.log("It is an array", arrayAbsolutePathMD);
+//   return arrayAbsolutePathMD;
+// };
+
+// traverseFolder(pathArg);
+
+// //Reading the md files
+// const resultMD = traverseFolder(argv[2]);
+// // console.log('array', resultMD)
+// const readFiles = (userPath) => {
+//   return new Promise((resolve, rejects) => {
+//     fs.readFile(userPath, "utf8", (err, data) => {
+//       if (err) {
+//       //  console.error("error", err);
+//         return;
+//       }
+//       // console.log("contenido", data);
+//       resolve(data);
+//     });
+//   });
+// };
+// //Get the md links
+// const getLinks = (fileMd) => {
+//   return new Promise((resolve, rejects) => {
+//     const regexp = /(?<!!)\[(.*?)\]\((.*?)\)/g
+//     let sameLinks = [];
+//     let totalLinks = [];
+//     readFiles(fileMd).then((response) => {
+//       sameLinks = response.match(regexp)
+//       if (sameLinks !== null) {
+//         sameLinks.forEach(link => {
+//           //   console.log('link', link)
+//           totalLinks.push({
+//             href: link.match(/(?<!!)\((.*?)\)/g).toString().replace(/\(|\)/g, ""),
+//             text: link.match(/(?<!!)\[(.*?)\]/g).toString().replace(/\[|\]/g, ""),
+//             file: fileMd,
+//           })
+//         });
+//       }
+//       resolve(totalLinks);
+//     });
+//   });
+// };
+
+// //Total links on a function
+// const totales = (arrMds) => {
+//   let arrTotalObjects = [];
+//   let promesas;
+//   arrMds.forEach((fileMd) => {
+//    // console.log("filemd", fileMd);
+//     promesas = getLinks(fileMd).then((response) => {
+//     //   console.log("ver", response);
+//       return response;
+//     });
+//     arrTotalObjects.push(promesas.then((res) => res));
+//   });
+
+//   return Promise.all(arrTotalObjects).then((res) => {
+//     // console.log("res: ", res.flat());
+//     return res.flat();
+//   });
+// };
+
+// //Validating links with fetch
+// const validateLinks = (response) => {
+//   const result = response.map((objeto) => {
+//     return fetch(objeto.href).then(res => {
+//       // console.log ('result', res)
+//       objeto.status = res.status
+//       objeto.statusText = res.statusText
+//       //console.log("objeto", objeto)
+//       return objeto;
+//     });
+//   });
+//   return Promise.all(result);
+// };
+
+// totales(resultMD).then(response => {
+// //   console.log("total", response);
+//   validateLinks(response).then((res) => console.log("validación"));
+// });
+
+// //Stats function
+// const statsLinks = (arrLinks) => {
+//   return {
+//     Total: arrLinks.lengt,
+//     Unique: new Set(arrLinks.map((element)=> element.href)).size,
+//   };
+// };
+
+// //Broken function
+// const brokenLinks = (arrLinks) => {
+//   const broken = arrLinks.filter((elemen) => elemen.statusTxt !== "OK").length;
+//   return {
+//     Total: arrLinks.length,
+//     Unique: new Set(arrLinks.map((element) => element.href)).size,
+//     Broken: broken,
+//   };
+// };
+
+// module.exports = {
+//   validatePathExist,
+//   absolutePath,
+//   traverseFolder,
+//   readFiles,
+//   getLinks,
+//   totales,
+//   validateLinks,
+//   statsLinks,
+//   brokenLinks,
+// }
+

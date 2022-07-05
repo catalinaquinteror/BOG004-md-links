@@ -3,5 +3,18 @@
   "version": "0.1.0",
   "engines": {
     "node": ">=14.x"
+  },
+  "dependencies": {
+    "get_my_md_links": "^0.1.0",
+    "node-fetch": "^2.6.7"
+  },
+  "scripts": {
+    "test": "jest --coverage"
+  },
+  "devDependencies": {
+    "jest": "^28.1.0"
+  },
+  "bin": {
+    "md-links": "./cli.js"
   }
 }
