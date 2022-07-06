@@ -173,7 +173,7 @@ totales(reasultMdFunction).then((response) => {
 
 // Stats function
 const statsLinks = (arrLinks) => {
-  console.log('here', arrLinks)
+  //console.log('here', arrLinks)
   return {
     Total: arrLinks.length,
     Unique: new Set(arrLinks.map((element) => element.href)).size,
